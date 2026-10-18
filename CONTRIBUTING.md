@@ -111,7 +111,7 @@ Not finished but want feedback? Open it as a **draft pull request**.
 
 ### 7. Review and merge
 
-- Every PR needs **one approval** before it can be merged.
+- Every PR needs **one approval from a lead** before it can be merged.
 - Respond to every review comment, either with a change or a reply.
 - Once approved and CI passes, merge with **Squash and merge** and delete your branch.
 
