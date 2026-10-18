@@ -64,13 +64,18 @@ Practice projects to introduce members to PyTorch, Git, and uv. Each new member 
 
 ### archive/2025-26 -- Reproducing Last Year's Baseline
 
-Last year's TCN torque prediction pipeline, trained on the Georgia Tech dataset. The team is reproducing its baseline results before starting this year's model. Changes here are limited to what's needed to run it (setup, bug fixes, docs). New work goes in `src/exo_ml/`.
+Last year's TCN torque prediction pipeline, trained on the Georgia Tech dataset. Before starting this year's model, all members will get the old repo running, reproducing its results as a baseline:
 
-**Quick start:**
+- **Returning members** fix the archive so it runs (setup, bug fixes, docs). These are the only changes made to `archive/2025-26/`.
+- **Everyone reproducing the baseline** runs the archive code as-is and records their results in `sandbox/<your-name>/`.
+
+New work goes in `src/exo_ml/`.
+
+**Quick start (reproducing):**
 
 1. Go to the folder and install its dependencies: `cd archive/2025-26 && uv sync`.
 2. Follow `archive/2025-26/REPRODUCE.md` to train and evaluate the baseline.
-3. Record your results and questions on your reproduction issue.
+3. Record your results in `sandbox/<your-name>/reproduction.md`, following your reproduction issue.
 
 ### torque-prediction -- Real-Time Torque Model (upcoming)
 

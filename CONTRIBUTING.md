@@ -14,8 +14,8 @@ This guide covers how we track work, write code, and get it merged.
 | Folder | What goes there |
 |---|---|
 | `src/exo_ml/` | This year's code: data, models, training, evaluation, inference |
-| `sandbox/<your-name>/` | Onboarding practice projects. Only edit your own folder. |
-| `archive/2025-26/` | Last year's code. **Only** changes needed to run and reproduce it (setup, bug fixes, docs). No new features. |
+| `sandbox/<your-name>/` | Onboarding practice projects and baseline reproduction results. Only edit your own folder. |
+| `archive/2025-26/` | Last year's code, fixed up by returning members. **Only** changes needed to run and reproduce it (setup, bug fixes, docs). No new features. |
 
 The archive is its own uv project. Run commands for it from inside that folder (e.g., `cd archive/2025-26 && uv run pytest`).
 
