@@ -4,6 +4,12 @@ Machine learning code for the McMaster Exoskeleton project. This repository cont
 
 Last year's code (2025/26) is kept for reference in [`archive/2025-26/`](archive/2025-26/).
 
+## Prerequisites
+
+- **uv** -- for Python and dependency management
+- **Git** -- for version control ([Learn Git Branching](https://learngitbranching.js.org/) if you're new)
+- **NVIDIA GPU or Apple Silicon Mac** -- optional, speeds up training
+
 ## Getting Started
 
 This project uses [uv](https://docs.astral.sh/uv/) to manage Python and dependencies, so you don't need to install Python separately.
@@ -46,6 +52,8 @@ exoskeleton-ml/
 ├── archive/
 │   └── 2025-26/                 <-- Last year's code, kept for reference (not actively developed)
 │
+├── pyproject.toml               # Project metadata, dependencies, and tool settings
+├── uv.lock                      # Exact dependency versions (managed by uv)
 ├── CONTRIBUTING.md              # Contribution guidelines and coding standards
 └── README.md                    # This file
 ```
@@ -77,15 +85,9 @@ New work goes in `src/exo_ml/`.
 2. Follow `archive/2025-26/REPRODUCE.md` to train and evaluate the baseline.
 3. Record your results in `sandbox/<your-name>/reproduction.md`, following your reproduction issue.
 
-### torque-prediction -- Real-Time Torque Model (upcoming)
+### src/exo_ml -- Real-Time Torque Model (upcoming)
 
 This year's model for predicting joint torque from IMU and motor data in real time on the Raspberry Pi 5. Work starts in `src/exo_ml/` once the baseline is reproduced, reusing what worked from last year.
-
-## Prerequisites
-
-- **uv** -- for Python and dependency management
-- **Git** -- for version control ([Learn Git Branching](https://learngitbranching.js.org/) if you're new)
-- **NVIDIA GPU or Apple Silicon Mac** -- optional, speeds up training
 
 ## Contributing
 

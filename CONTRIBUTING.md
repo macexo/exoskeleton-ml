@@ -17,6 +17,8 @@ This guide covers how we track work, write code, and get it merged.
 | `sandbox/<your-name>/` | Onboarding practice projects and baseline reproduction results. Only edit your own folder. |
 | `archive/2025-26/` | Last year's code, fixed up by returning members. **Only** changes needed to run and reproduce it (setup, bug fixes, docs). No new features. |
 
+Sandbox code uses the main project's environment. Run it with `uv run` (e.g., `uv run sandbox/your-name/train.py`) and don't create a separate uv project in your folder.
+
 The archive is its own uv project. Run commands for it from inside that folder (e.g., `cd archive/2025-26 && uv run pytest`).
 
 If you want to reuse something from the archive, copy or rewrite it into `src/exo_ml/` in a separate PR rather than importing from `archive/`.
@@ -76,8 +78,11 @@ uv run pytest            # Run tests
 
 ```bash
 git add .
+git status
 git commit -m "feat: add IMU dataloader"
 ```
+
+Before committing, check that `git status` only lists the files you meant to change under "Changes to be committed".
 
 We use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/): start each message with a type, a colon, and a short description in lowercase.
 
