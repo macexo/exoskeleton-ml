@@ -21,4 +21,4 @@ Welcome! This issue walks you through your first contribution. Post questions he
 ## Notes
 
 - Only edit files inside your own folder.
-- If you need a package that isn't installed, ask here before running `uv add`.
+- PyTorch, torchvision, NumPy, and Matplotlib are already installed. Ask if you need other packages installed, before running `uv add`.
