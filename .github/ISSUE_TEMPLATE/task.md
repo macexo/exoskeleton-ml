@@ -1,19 +1,23 @@
 ---
 name: Task
-about: A piece of work to do (feature, docs, research, setup)
+about: A piece of work to do (feature, research, docs, setup)
 title: ""
 labels: []
 assignees: []
 ---
 
-## Goal
+## Objective
 
 <!-- What should this accomplish, and why? -->
 
-## Details
+## Research Scope
 
-<!-- Relevant files, links, or approach. -->
+<!-- What to investigate or build, relevant files and links, and what's out of scope. -->
 
-## Done when
+## Deliverable
+
+<!-- What gets produced: e.g., a merged PR, a results table, a design doc. -->
+
+## Acceptance Criteria
 
 - [ ]

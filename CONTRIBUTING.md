@@ -112,13 +112,15 @@ Then go to the repo on GitHub. You'll see a prompt to **Compare & pull request**
 - Write `Closes #12` (using your issue number) so the issue closes automatically when your PR is merged.
 - Describe what you changed and how you tested it.
 
-Not finished but want feedback? Open it as a **draft pull request**.
+Then move your issue to **Under Review** on the project board.
+
+Not finished but want feedback? Open it as a **draft pull request** and leave your issue in **In Progress** until it's ready.
 
 ### 7. Review and merge
 
 - Every PR needs **one approval from a lead** before it can be merged.
 - Respond to every review comment, either with a change or a reply.
-- Once approved and CI passes, merge with **Squash and merge** and delete your branch.
+- Once approved and CI passes, merge with **Squash and merge**. GitHub deletes the branch automatically, and your issue closes and moves to **Done**.
 
 ### 8. Clean up
 
