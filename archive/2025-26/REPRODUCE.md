@@ -12,6 +12,13 @@ uv run pytest
 
 uv installs Python 3.10 for this folder automatically.
 
+The default test command runs 44 offline tests. The 11 tests marked `integration` require access
+to the private Hugging Face dataset and are run separately after authentication:
+
+```bash
+uv run pytest -m integration
+```
+
 ## 2. Data access
 
 Training uses the `MacExo/exoData` dataset on Hugging Face (about 10 GB once downloaded).

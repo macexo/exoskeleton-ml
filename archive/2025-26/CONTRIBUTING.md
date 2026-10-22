@@ -2,12 +2,11 @@
 
 ## Getting Started
 
-1. Clone the repository `git clone git@github.com:McMaster-Exoskeleton/exoskeleton-ai.git`
-2. Create a virtual environment and install dependencies:
+1. Clone the repository `git clone git@github.com:macexo/exoskeleton-ml.git`
+2. Enter the archive and install the locked dependencies with uv:
    ```bash
-   python -m venv venv
-   source venv/bin/activate ## For Mac/Linux
-   make install-dev
+   cd exoskeleton-ml/archive/2025-26
+   uv sync --locked
    ```
 
 ## Development Workflow
@@ -33,14 +32,18 @@ git checkout -b feature/your-feature-name
 Before committing, ensure all tests pass:
 
 ```bash
-# Run tests
-make test
+# Run the offline tests
+uv run pytest
+
+# Run private-data integration tests after authenticating with Hugging Face
+uv run pytest -m integration
 
 # Check code formatting
-make format-check
+uv run black --check src/ tests/
 
 # Run linters
-make lint
+uv run ruff check src/ tests/
+uv run mypy src/
 ```
 
 ### 4. Commit Your Changes

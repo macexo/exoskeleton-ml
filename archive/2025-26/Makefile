@@ -1,4 +1,4 @@
-.PHONY: help install install-dev test lint format clean build docs
+.PHONY: help install install-dev test test-integration lint lint-fix format format-check clean train
 
 help:
 	@echo 'Usage: make [target]'
@@ -7,37 +7,37 @@ help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 install:
-	pip3 install -e .
+	uv sync --locked --no-dev
 
 install-dev:  ## Install package with development dependencies
-	pip3 install -e ".[dev]"
-
-install-all:  ## Install all optional dependencies
-	pip3 install -e ".[all]"
+	uv sync --locked
 
 test:  ## Run tests with pytest
-	pytest
+	uv run pytest
+
+test-integration:  ## Run tests requiring the private Hugging Face dataset
+	uv run pytest -m integration
 
 test-cov:  ## Run tests with coverage report
-	pytest --cov --cov-report=html --cov-report=term
+	uv run pytest --cov --cov-report=html --cov-report=term
 
 test-fast:  ## Run tests excluding slow tests
-	pytest -m "not slow"
+	uv run pytest -m "not slow and not integration"
 
 lint:  ## Run linters (ruff, mypy)
-	ruff check src/ tests/
-	mypy src/
+	uv run ruff check src/ tests/
+	uv run mypy src/
 
 lint-fix:  ## Fix linting issues automatically
-	ruff check --fix src/ tests/
+	uv run ruff check --fix src/ tests/
 
 format:  ## Format code with black and ruff
-	black src/ tests/
-	ruff check --fix src/ tests/
+	uv run black src/ tests/
+	uv run ruff check --fix src/ tests/
 
 format-check:  ## Check code formatting without modifying files
-	black --check src/ tests/
-	ruff check src/ tests/
+	uv run black --check src/ tests/
+	uv run ruff check src/ tests/
 
 clean:  ## Remove build artifacts and cache files
 	rm -rf build/
@@ -53,4 +53,4 @@ clean:  ## Remove build artifacts and cache files
 	find . -type f -name "*.pyo" -delete
 
 train:  ## Run training script
-	python3 scripts/train.py
+	uv run scripts/train_tcn.py

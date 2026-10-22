@@ -1,46 +1,44 @@
 # Setup Guide
 
-This guide will walk you through setting up the Exoskeleton AI project for development.
+This guide sets up the archived Exoskeleton AI project with uv.
 
 ## Prerequisites
 
-Before you begin, ensure you have the following installed:
+Install the following first:
 
-- Python 3.10 or higher
+- [uv](https://docs.astral.sh/uv/)
 - Git
-- pip (comes with Python)
 
 ## Step-by-Step Setup
 
-### 1. Clone the Repository
+### 1. Open the archived project
 
 ```bash
-git clone https://github.com/yourusername/exoskeleton-ai.git
-cd exoskeleton-ai
+git clone https://github.com/macexo/exoskeleton-ml.git
+cd exoskeleton-ml/archive/2025-26
 ```
 
-### 2. Create Virtual Environment
+### 2. Install Python and dependencies
 
 ```bash
-# Create virtual environment
-python -m venv venv
-
-# Activate it
-# On macOS/Linux:
-source venv/bin/activate
-
-# On Windows:
-venv\Scripts\activate
+uv sync --locked
 ```
 
-### 3. Install Dependencies
+uv downloads the required Python 3.10 interpreter, creates `.venv`, and installs both the package
+and its development dependencies. There is no virtual environment to activate; prefix project
+commands with `uv run`.
+
+### 3. Verify the setup
 
 ```bash
-# Install package in editable mode with all dev dependencies
-make install-dev
+uv run pytest
 ```
 
-This will install:
-- All core dependencies (PyTorch, NumPy, etc.)
-- Development tools (pytest, black, ruff, mypy)
-- The package in editable mode (changes reflect immediately)
+The default suite is offline. After obtaining access to `MacExo/exoData` and authenticating with
+Hugging Face, run the private-data integration tests explicitly:
+
+```bash
+uv run pytest -m integration
+```
+
+See [REPRODUCE.md](../REPRODUCE.md) for the training and evaluation workflow.
