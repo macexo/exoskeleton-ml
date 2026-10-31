@@ -48,7 +48,7 @@ dev = [
 
 [tool.uv]
 # Resolve packages as they were when this code was last updated (March 2026).
-exclude-newer = "2026-03-07"
+exclude-newer = "2026-03-08T05:00:00Z"
 
 [tool.setuptools.packages.find]
 where = ["src"]
