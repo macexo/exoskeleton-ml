@@ -151,7 +151,7 @@ addopts = [
 ]
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
-    "integration: requires authenticated access to the private Hugging Face dataset",
+    "integration: downloads and tests against public Hugging Face dataset",
     "unit: marks tests as unit tests",
 ]
 filterwarnings = [

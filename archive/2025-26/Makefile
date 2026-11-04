@@ -15,7 +15,7 @@ install-dev:  ## Install package with development dependencies
 test:  ## Run tests with pytest
 	uv run pytest
 
-test-integration:  ## Run tests requiring the private Hugging Face dataset
+test-integration:  ## Run tests requiring the Hugging Face dataset
 	uv run pytest -m integration
 
 test-cov:  ## Run tests with coverage report
