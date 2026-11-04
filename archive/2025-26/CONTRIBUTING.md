@@ -35,7 +35,7 @@ Before committing, ensure all tests pass:
 # Run the offline tests
 uv run pytest
 
-# Run data integration tests after authenticating with Hugging Face
+# Run the integration tests (downloads the public Hugging Face dataset)
 uv run pytest -m integration
 
 # Check code formatting

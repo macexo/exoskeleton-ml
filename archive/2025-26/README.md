@@ -20,7 +20,7 @@ uv run pytest
 ```
 
 uv downloads the required Python 3.10 interpreter and creates an isolated `.venv` automatically.
-The default test command runs the offline suite. Tests that require authenticated access to the Hugging Face dataset are opt-in:
+The default test command runs the offline suite. Tests that download the public Hugging Face dataset are opt-in:
 
 ```bash
 uv run pytest -m integration

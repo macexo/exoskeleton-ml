@@ -34,7 +34,7 @@ commands with `uv run`.
 uv run pytest
 ```
 
-The default suite is offline. After obtaining access to `MacExo/exoData` and authenticating with Hugging Face, run the data integration tests explicitly:
+The default suite is offline. To also run the integration tests, which download the public `MacExo/exoData` dataset, run:
 
 ```bash
 uv run pytest -m integration

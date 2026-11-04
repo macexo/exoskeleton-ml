@@ -12,7 +12,7 @@ uv run pytest
 
 uv installs Python 3.10 for this folder automatically.
 
-The default test command runs 44 offline tests. The 11 test that download and test the public Hugging Face dataset run separately:
+The default test command runs 44 offline tests. The 11 integration tests download the public Hugging Face dataset and run separately:
 
 ```bash
 uv run pytest -m integration
@@ -29,7 +29,8 @@ No login needed, dataset downloads automatically on first use.
 ```bash
 uv run scripts/train_tcn.py
 ```
-Outputs are then saved in `outputs/<date>/<time>/` (git ignored)
+
+Outputs are saved to `outputs/<date>/<time>/` (ignored by Git). Last year's docs estimate 2-4 hours on a GPU and 8-12 hours on a CPU. For a quick check, add `training.num_epochs=5`.
 
 ## 4. Evaluate
 
