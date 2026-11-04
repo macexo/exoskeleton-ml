@@ -6,17 +6,23 @@
 
 ```bash
 cd archive/2025-26
-uv sync
+uv sync --locked
 uv run pytest
 ```
 
 uv installs Python 3.10 for this folder automatically.
 
+The default test command runs 44 offline tests. The 11 integration tests download the public Hugging Face dataset and run separately:
+
+```bash
+uv run pytest -m integration
+```
+
 ## 2. Data access
 
-Training uses the `MacExo/exoData` dataset on Hugging Face (about 10 GB once downloaded).
+Training uses the [`MacExo/exoData` dataset on Hugging Face](https://huggingface.co/datasets/MacExo/exoData) (about 10 GB once downloaded)
 
-TODO: who grants access, what token type is needed (read access should be enough), and how to log in (`uv run scripts/login_hf.py` or `HF_TOKEN` in a local `.env`).
+No login needed, dataset downloads automatically on first use.
 
 ## 3. Train
 
@@ -24,11 +30,13 @@ TODO: who grants access, what token type is needed (read access should be enough
 uv run scripts/train_tcn.py
 ```
 
-TODO: confirm this works with the default config. Last year's docs estimate ~2-4 hours on a GPU and ~8-12 hours on CPU. Outputs go to `outputs/<date>/<time>/` (ignored by Git).
+Outputs are saved to `outputs/<date>/<time>/` (ignored by Git). Last year's docs estimate 2-4 hours on a GPU and 8-12 hours on a CPU. For a quick check, add `training.num_epochs=5`.
 
 ## 4. Evaluate
 
-TODO: the command to evaluate a trained model and where the metrics are printed or saved.
+Evaluation happens automatically after training. The script reloads `best_model.pt`, evaluates it on the configured test split, prints the metrics to the terminal, and saves them in `outputs/<date>/<time>/training_results.pt`.
+
+Currently no standalone command for evaluating an existing checkpoint 
 
 ## 5. Expected results
 

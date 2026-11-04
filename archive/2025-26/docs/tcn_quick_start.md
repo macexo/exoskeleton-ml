@@ -5,7 +5,7 @@ This guide shows you how to train and use the TCN model for exoskeleton joint mo
 ## Prerequisites
 
 ✅ Data pipeline is set up (HuggingFace dataset available)
-✅ Dependencies installed (`pip install -r requirements.txt`)
+✅ Dependencies installed (`uv sync --locked`)
 ✅ Configuration files in place
 
 ## Quick Start
@@ -15,7 +15,7 @@ This guide shows you how to train and use the TCN model for exoskeleton joint mo
 Verify that the TCN model works correctly:
 
 ```bash
-python scripts/test_tcn_model.py
+uv run scripts/test_tcn_model.py
 ```
 
 **Expected output**: All 5 tests should pass.
@@ -25,7 +25,7 @@ python scripts/test_tcn_model.py
 Train with default configuration (TCN medium, 100 epochs):
 
 ```bash
-python scripts/train_tcn.py
+uv run scripts/train_tcn.py
 ```
 
 This will:
@@ -68,26 +68,26 @@ Val MAE:    0.2789 Nm/kg
 
 ```bash
 # Train for fewer epochs
-python scripts/train_tcn.py training.num_epochs=50
+uv run scripts/train_tcn.py training.num_epochs=50
 
 # Use larger batch size (if you have GPU memory)
-python scripts/train_tcn.py training.batch_size=64
+uv run scripts/train_tcn.py training.batch_size=64
 
 # Change learning rate
-python scripts/train_tcn.py training.learning_rate=0.0001
+uv run scripts/train_tcn.py training.learning_rate=0.0001
 
 # Combine multiple overrides
-python scripts/train_tcn.py training.num_epochs=50 training.batch_size=16 training.learning_rate=0.0005
+uv run scripts/train_tcn.py training.num_epochs=50 training.batch_size=16 training.learning_rate=0.0005
 ```
 
 ### Use Different Model Sizes
 
 ```bash
 # Small model (faster, fewer parameters)
-python scripts/train_tcn.py model=tcn_small
+uv run scripts/train_tcn.py model=tcn_small
 
 # Large model (slower, more capacity)
-python scripts/train_tcn.py model=tcn_large
+uv run scripts/train_tcn.py model=tcn_large
 ```
 
 ### Custom Data Splits
@@ -95,7 +95,7 @@ python scripts/train_tcn.py model=tcn_large
 Override participant splits in `configs/data/phase1.yaml` or via command line:
 
 ```bash
-python scripts/train_tcn.py \
+uv run scripts/train_tcn.py \
   data.splits.train=[BT01,BT02,BT03,BT06,BT07,BT08] \
   data.splits.val=[BT09] \
   data.splits.test=[BT10,BT11]
@@ -106,7 +106,7 @@ python scripts/train_tcn.py \
 Run a sweep over multiple hyperparameters:
 
 ```bash
-python scripts/train_tcn.py -m \
+uv run scripts/train_tcn.py -m \
   model=tcn_small,tcn,tcn_large \
   training.learning_rate=0.0001,0.001,0.01
 ```
@@ -186,13 +186,13 @@ Your results may vary based on:
 
 ```bash
 # Reduce batch size
-python scripts/train_tcn.py training.batch_size=8
+uv run scripts/train_tcn.py training.batch_size=8
 
 # Use smaller model
-python scripts/train_tcn.py model=tcn_small
+uv run scripts/train_tcn.py model=tcn_small
 
 # Reduce number of workers
-python scripts/train_tcn.py data.num_workers=0
+uv run scripts/train_tcn.py data.num_workers=0
 ```
 
 ### Data not downloading
@@ -204,15 +204,12 @@ python scripts/train_tcn.py data.num_workers=0
 ### Import errors
 
 ```bash
-# Make sure you're in the project root
-cd /path/to/exoskeleton-ai
+# Make sure you're in the archived project root
+cd /path/to/exoskeleton-ml/archive/2025-26
 
-# Verify Python path includes src/
-export PYTHONPATH="${PYTHONPATH}:$(pwd)/src"
-
-# Or run from scripts directory
-cd scripts
-python train_tcn.py
+# Reinstall the locked environment, then run through uv
+uv sync --locked
+uv run scripts/train_tcn.py
 ```
 
 ## Next Steps
