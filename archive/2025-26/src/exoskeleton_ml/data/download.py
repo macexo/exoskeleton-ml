@@ -1,6 +1,7 @@
 """Data download utilities for exoskeleton datasets."""
 
 import json
+from collections import Counter
 from datetime import datetime
 from pathlib import Path
 
@@ -225,10 +226,9 @@ def _print_dataset_summary(dataset: Dataset) -> None:
 
     # Trials per participant
     print("\nTrials per participant:")
+    trial_counts = Counter(dataset["participant"])
     for participant in participants:
-        p = participant  # Bind to local variable to avoid closure issue
-        count = len(dataset.filter(lambda x, p=p: x["participant"] == p))
-        print(f"  {participant}: {count}")
+        print(f"  {participant}: {trial_counts[participant]}")
 
     print("=" * 60 + "\n")
 
