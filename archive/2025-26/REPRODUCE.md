@@ -6,13 +6,13 @@
 
 ```bash
 cd archive/2025-26
-uv sync
+uv sync --locked
 uv run pytest
 ```
 
 uv installs Python 3.10 for this folder automatically.
 
-The default test command runs 44 offline tests. The 11 tests marked `integration` run separately after authentication:
+The default test command runs 44 offline tests. The 11 test that download and test the public Hugging Face dataset run separately:
 
 ```bash
 uv run pytest -m integration
@@ -33,9 +33,9 @@ Outputs are then saved in `outputs/<date>/<time>/` (git ignored)
 
 ## 4. Evaluate
 
-Evaluation happens automatically after training. Check terminal
+Evaluation happens automatically after training. The script reloads `best_model.pt`, evaluates it on the configured test split, prints the metrics to the terminal, and saves them in `outputs/<date>/<time>/training_results.pt`.
 
-TODO: the command to evaluate a trained model and where the metrics are printed or saved.
+Currently no standalone command for evaluating an existing checkpoint 
 
 ## 5. Expected results
 
