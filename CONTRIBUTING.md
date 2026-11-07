@@ -9,13 +9,14 @@ This guide covers how we track work, write code, and get it merged.
 - New to Git? Work through [Learn Git Branching](https://learngitbranching.js.org/) first.
 - Every piece of work starts from an **issue** on the project board. If there's no issue for what you want to do, ask a lead to create one or create it yourself.
 
-## Where your code goes
+## Where your work goes
 
-| Folder | What goes there |
+| Folder | Description |
 |---|---|
 | `src/exo_ml/` | This year's code: data, models, training, evaluation, inference |
-| `sandbox/<your-name>/` | Onboarding practice projects and baseline reproduction results. Only edit your own folder. |
-| `archive/2025-26/` | Last year's code, fixed up by returning members. **Only** changes needed to run and reproduce it (setup, bug fixes, docs). No new features. |
+| `docs/` | Design docs, research reports, and plans (see [`docs/README.md`](docs/README.md)) |
+| `sandbox/<your-name>/` | Onboarding practice projects. Only edit your own folder. |
+| `archive/2025-26/` | Last year's code, fixed up and migrated to uv. **Only** changes needed to run and reproduce it (setup, bug fixes, docs). No new features. |
 
 Sandbox code uses the main project's environment. Run it with `uv run` (e.g., `uv run sandbox/your-name/train.py`) and don't create a separate uv project in your folder.
 
