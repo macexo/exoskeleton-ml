@@ -1,0 +1,95 @@
+{
+  "dataset_revision": "d3640796d9b8697153f36c9154ced1555cd9230d",
+  "total_trials": 1669,
+  "total_timesteps": 9369823,
+  "min_sequence_length": 216,
+  "max_sequence_length": 43201,
+  "splits": {
+    "train": {
+      "participants": [
+        "BT01",
+        "BT02",
+        "BT03",
+        "BT06",
+        "BT07",
+        "BT08",
+        "BT09",
+        "BT10",
+        "BT11",
+        "BT12",
+        "BT13"
+      ],
+      "trials": 1375,
+      "timesteps": 7536065,
+      "invalid_target_values": [
+        1296089,
+        1579658,
+        1296089,
+        1579658
+      ],
+      "total_target_values": 30144260
+    },
+    "val": {
+      "participants": [
+        "BT14"
+      ],
+      "trials": 73,
+      "timesteps": 466355,
+      "invalid_target_values": [
+        90256,
+        89622,
+        90256,
+        89622
+      ],
+      "total_target_values": 1865420
+    },
+    "test": {
+      "participants": [
+        "BT15",
+        "BT16",
+        "BT17"
+      ],
+      "trials": 221,
+      "timesteps": 1367403,
+      "invalid_target_values": [
+        270226,
+        274760,
+        270226,
+        274760
+      ],
+      "total_target_values": 5469612
+    }
+  },
+  "shards": [
+    {
+      "file": "train-00000-of-00006.parquet",
+      "sha256": "82754c8f752f5c71c57d9ffcac60a19867c85c765ebf438df1a00fe5785452e8",
+      "bytes": 406433614
+    },
+    {
+      "file": "train-00001-of-00006.parquet",
+      "sha256": "a71a9b1e49597c596edd56b0ac6f0cbf61f0825d393ea37d6d32bbc65a29936b",
+      "bytes": 401642593
+    },
+    {
+      "file": "train-00002-of-00006.parquet",
+      "sha256": "d24afa5445ac5eeaad638709b1f28e14816b579f24b52e00e8b5f02ca237c267",
+      "bytes": 371422380
+    },
+    {
+      "file": "train-00003-of-00006.parquet",
+      "sha256": "3ea2215f5dce9cc5616c36021cb38a38d364793099abf96edaaf165c595def78",
+      "bytes": 383325467
+    },
+    {
+      "file": "train-00004-of-00006.parquet",
+      "sha256": "4ca58f2434bd5122cde8574f2ea9c866f5a192baadcee50f465ec9898a6f06ef",
+      "bytes": 383128460
+    },
+    {
+      "file": "train-00005-of-00006.parquet",
+      "sha256": "a3ba13c6d4a1c6adcfedb11a6aa51d5d10d06bc46d69e23ecc40ce4a831ab127",
+      "bytes": 438022985
+    }
+  ]
+}

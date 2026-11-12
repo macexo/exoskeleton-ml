@@ -1,0 +1,189 @@
+data:
+  hf_repo: MacExo/exoData
+  cache_dir: <chat-work>/data/archive_cache
+  num_imu_features: 24
+  num_angle_features: 4
+  num_targets: 4
+  total_input_features: 28
+  imu_features:
+  - thigh_imu_l_accel_x
+  - thigh_imu_l_accel_y
+  - thigh_imu_l_accel_z
+  - thigh_imu_l_gyro_x
+  - thigh_imu_l_gyro_y
+  - thigh_imu_l_gyro_z
+  - shank_imu_l_accel_x
+  - shank_imu_l_accel_y
+  - shank_imu_l_accel_z
+  - shank_imu_l_gyro_x
+  - shank_imu_l_gyro_y
+  - shank_imu_l_gyro_z
+  - thigh_imu_r_accel_x
+  - thigh_imu_r_accel_y
+  - thigh_imu_r_accel_z
+  - thigh_imu_r_gyro_x
+  - thigh_imu_r_gyro_y
+  - thigh_imu_r_gyro_z
+  - shank_imu_r_accel_x
+  - shank_imu_r_accel_y
+  - shank_imu_r_accel_z
+  - shank_imu_r_gyro_x
+  - shank_imu_r_gyro_y
+  - shank_imu_r_gyro_z
+  angle_features:
+  - hip_flexion_l
+  - hip_flexion_r
+  - knee_angle_l
+  - knee_angle_r
+  target_features:
+  - hip_flexion_l_moment
+  - hip_flexion_r_moment
+  - knee_angle_l_moment
+  - knee_angle_r_moment
+  splits:
+    train:
+    - BT01
+    - BT02
+    - BT03
+    - BT06
+    - BT07
+    - BT08
+    - BT09
+    - BT10
+    - BT11
+    - BT12
+    - BT13
+    val:
+    - BT14
+    test:
+    - BT15
+    - BT16
+    - BT17
+  participants:
+    BT01:
+      mass_kg: 80.59
+    BT02:
+      mass_kg: 72.24
+    BT03:
+      mass_kg: 95.29
+    BT06:
+      mass_kg: 79.33
+    BT07:
+      mass_kg: 64.49
+    BT08:
+      mass_kg: 69.13
+    BT09:
+      mass_kg: 82.31
+    BT10:
+      mass_kg: 93.45
+    BT11:
+      mass_kg: 50.39
+    BT12:
+      mass_kg: 78.15
+    BT13:
+      mass_kg: 89.85
+    BT14:
+      mass_kg: 67.3
+    BT15:
+      mass_kg: 58.4
+    BT16:
+      mass_kg: 64.33
+    BT17:
+      mass_kg: 60.03
+  batch_size: 32
+  num_workers: 0
+  shuffle_train: true
+  shuffle_val: false
+  shuffle_test: false
+  pin_memory: true
+  drop_last_train: false
+  drop_last_val: false
+  drop_last_test: false
+  preprocessing:
+    normalize: true
+    normalization_method: standard
+    normalization_stats_file: data/processed/phase1/normalization_stats.json
+    max_sequence_length: null
+    padding_value: 0.0
+    check_nan: true
+    check_inf: true
+    remove_invalid: true
+  download:
+    auto_download: true
+    force_redownload: false
+    verify_integrity: true
+  caching:
+    cache_preprocessed: true
+    cache_format: pt
+    cache_compression: false
+    invalidate_on_config_change: true
+  augmentation:
+    enabled: false
+    methods: []
+  filtering:
+    enabled: false
+    min_sequence_length: 100
+    max_sequence_length: null
+    exclude_trials: []
+    include_only_trials: []
+    exclude_participants: []
+    task_filter:
+      enabled: false
+      include_tasks: []
+      exclude_tasks: []
+  logging:
+    verbose: true
+    log_dataset_stats: true
+    log_preprocessing: true
+    warn_on_skip: true
+  memory:
+    prefetch_factor: 2
+    persistent_workers: true
+    max_cache_size_gb: 20
+model:
+  name: tcn
+  type: tcn
+  architecture:
+    input_size: 28
+    output_size: 4
+    num_channels:
+    - 25
+    - 25
+    - 25
+    - 25
+    - 25
+    kernel_size: 7
+    dropout: 0.2
+    spatial_dropout: false
+    activation: ReLU
+    norm: weight_norm
+  effective_history: 187
+  receptive_field_ms: 1870
+  normalization:
+    enabled: false
+    use_dataset_stats: true
+  initialization:
+    conv_std: 0.01
+    linear_std: 0.01
+  estimated_params: 47000
+training:
+  num_epochs: 5
+  batch_size: 8
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  optimizer: adam
+  scheduler:
+    type: reduce_on_plateau
+    factor: 0.5
+    patience: 10
+    min_lr: 1.0e-06
+  gradient_clip_norm: 1.0
+  early_stopping_patience: 20
+  save_frequency: 10
+  output_dir: <chat-work>/run/five_epoch
+logging:
+  level: INFO
+  file: null
+  verbose: true
+device: null
+seed: 42

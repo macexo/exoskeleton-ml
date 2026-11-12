@@ -1,0 +1,124 @@
+{
+  "source_commit": "5747037e203c0e69e853f8f070ca7fcf10dfe5ea",
+  "dataset_revision": "d3640796d9b8697153f36c9154ced1555cd9230d",
+  "best_epoch": 3,
+  "epochs_completed": 5,
+  "best_val_loss": 0.23206183612346648,
+  "test_loss": 0.2670237249029534,
+  "archive_test_metrics": {
+    "rmse_overall": 0.4986379297012,
+    "rmse_hip_l": 0.4971362739907949,
+    "rmse_hip_r": 0.5049592486778626,
+    "rmse_knee_l": 0.522031650223366,
+    "rmse_knee_r": 0.46894965914395137,
+    "mae_overall": 0.3502026834453134,
+    "r2_overall": 0.6410168746803204,
+    "nrmse_overall": 0.031155601298241933
+  },
+  "recomputed_archive_test_metrics": {
+    "rmse_overall": 0.4986379297012,
+    "rmse_hip_l": 0.4971362739907949,
+    "rmse_hip_r": 0.5049592486778626,
+    "rmse_knee_l": 0.522031650223366,
+    "rmse_knee_r": 0.46894965914395137,
+    "mae_overall": 0.3502026834453134,
+    "r2_overall": 0.6410168746803204,
+    "nrmse_overall": 0.031155601298241933
+  },
+  "physical_zero_filled_test_metrics": {
+    "rmse_overall": 0.1989149177889609,
+    "rmse_hip_l": 0.20064563933236118,
+    "rmse_hip_r": 0.2210283112124597,
+    "rmse_knee_l": 0.19223347645371602,
+    "rmse_knee_r": 0.17945105839143508,
+    "mae_overall": 0.13945087444402476,
+    "r2_overall": 0.6422981946388638,
+    "nrmse_overall": 0.03052411995353677
+  },
+  "physical_valid_reference_test_metrics": {
+    "rmse_overall": 0.20925227300512328,
+    "rmse_hip_l": 0.21188290471495025,
+    "rmse_hip_r": 0.23848635462164985,
+    "rmse_knee_l": 0.19644387445348713,
+    "rmse_knee_r": 0.18655486126792586,
+    "mae_overall": 0.1474365836415065,
+    "r2_overall": 0.6824204161330008,
+    "nrmse_overall": 0.03211041963446483
+  },
+  "physical_valid_per_participant": {
+    "BT15": {
+      "rmse_overall": 0.2262196151142099,
+      "rmse_hip_l": 0.23119976396000616,
+      "rmse_hip_r": 0.2629012857350747,
+      "rmse_knee_l": 0.19575732117612374,
+      "rmse_knee_r": 0.20938902149225064,
+      "mae_overall": 0.15823482630136881,
+      "r2_overall": 0.6343022740191515,
+      "nrmse_overall": 0.039243822195097006
+    },
+    "BT16": {
+      "rmse_overall": 0.2124404871790947,
+      "rmse_hip_l": 0.20706907520345114,
+      "rmse_hip_r": 0.23219895199875132,
+      "rmse_knee_l": 0.22657447555560747,
+      "rmse_knee_r": 0.17998106141093714,
+      "mae_overall": 0.14781517250885007,
+      "r2_overall": 0.7185444736419004,
+      "nrmse_overall": 0.03259966113010327
+    },
+    "BT17": {
+      "rmse_overall": 0.18746293074234816,
+      "rmse_hip_l": 0.19593237662086616,
+      "rmse_hip_r": 0.218175693901379,
+      "rmse_knee_l": 0.1626531679357819,
+      "rmse_knee_r": 0.16784550971699239,
+      "mae_overall": 0.1363537445476781,
+      "r2_overall": 0.6846624985991547,
+      "nrmse_overall": 0.044197768986734
+    }
+  },
+  "test_trials": 221,
+  "test_raw_nonfinite_values_per_joint": [
+    270226,
+    274760,
+    270226,
+    274760
+  ],
+  "archive_scored_scalar_count": 5469612,
+  "physical_valid_scored_scalar_count": 4379640,
+  "train_losses": [
+    0.5582892888680447,
+    0.35985311380652496,
+    0.3116990098253239,
+    0.29649850310281267,
+    0.2774807581201542
+  ],
+  "val_losses": [
+    0.31048954129219053,
+    0.26230242699384687,
+    0.23206183612346648,
+    0.25383894592523576,
+    0.23227395713329316
+  ],
+  "device": "mps",
+  "python": "3.10.22 (main, Oct  9 2026, 15:10:41) [Clang 22.1.3 ]",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "torch": "2.10.0",
+  "scipy_runtime_override": "1.14.1 in work/runtime; original archive venv scipy 1.15.3 failed to load",
+  "seed_note": "Config contains seed 42 but train_tcn.py does not set RNG seeds; this run did not patch or seed the trainer.",
+  "checkpoint_sha256": "87bb23459c01b8b907be03113af723debd04b1971c0674923303eb0ce0ac1625",
+  "results_sha256": "44d69be0c005102fc62a6177a03ec3e4e7a18606814f7762b3ff78d9b601f8cb",
+  "config_sha256": "8ba1c2ffb4bcafb4f5154295f7a91fc8eb8276b4688d865edbaef85c892b40ad",
+  "diagnostic_seconds": 10.42292594909668,
+  "verification": "Official archived metrics independently reproduced exactly in a read-only pass; all scalar metric values matched.",
+  "review_status": {
+    "krishiv_review": "pending",
+    "saharsh_review": "pending",
+    "lead_review_requested": false
+  },
+  "helper_scripts_sha256": {
+    "prepare_cache.py": "9bcdeb7f3157ca62f956f0fe40c2d9c3677e4716720a003bf292dd0ff90edc6f",
+    "audit_data.py": "cf09726e101ea0f6914b74fe4efe19d119d5e03edf9e74097a4665466ff29852",
+    "score_run.py": "4d3b168679a29718c3df0ce552eeb79f3d754e26f7f441411ab98c92aefc98ed"
+  }
+}
