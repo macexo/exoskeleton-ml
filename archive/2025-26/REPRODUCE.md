@@ -10,7 +10,7 @@ uv sync --locked
 uv run pytest
 ```
 
-uv installs Python 3.10 for this folder automatically.
+uv installs Python 3.11 for this folder automatically.
 
 The default test command runs 44 offline tests. The 11 integration tests download the public Hugging Face dataset and run separately:
 

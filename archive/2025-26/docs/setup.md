@@ -24,7 +24,7 @@ cd exoskeleton-ml/archive/2025-26
 uv sync --locked
 ```
 
-uv downloads the required Python 3.10 interpreter, creates `.venv`, and installs both the package
+uv downloads the required Python 3.11 interpreter, creates `.venv`, and installs both the package
 and its development dependencies. There is no virtual environment to activate; prefix project
 commands with `uv run`.
 

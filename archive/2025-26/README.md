@@ -19,7 +19,7 @@ uv sync --locked
 uv run pytest
 ```
 
-uv downloads the required Python 3.10 interpreter and creates an isolated `.venv` automatically.
+uv downloads the required Python 3.11 interpreter and creates an isolated `.venv` automatically.
 The default test command runs the offline suite. Tests that download the public Hugging Face dataset are opt-in:
 
 ```bash
