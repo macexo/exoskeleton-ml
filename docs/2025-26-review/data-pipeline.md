@@ -20,6 +20,7 @@ Data preparation happens once, offline, in [`prepare_hf_dataset.py`](../../archi
 - `*_exo.csv` contains the IMU readings.
 - `*_angle_filt.csv` contains the filtered joint angles.
 - `*_moment_filt_bio.csv` contains the biological joint moments, already normalized by body mass (Nm/kg).
+
 The [`process_trial()`](../../archive/2025-26/scripts/prepare_hf_dataset.py#L87) function loads all three files and skips the trial if any file is missing, if the three files have different lengths, or if a required column is missing. It then keeps 24 IMU features (accelerometer and gyroscope for the left and right thigh and shank), 4 joint angles, and 4 joint moments. Foot IMUs and insole data are left out. Each trial is also tagged with the participant's body mass, which is hardcoded from the published paper.
  
 **Hugging Face upload.** The processed trials are combined into a Hugging Face dataset and uploaded to [`MacExo/exoData`](https://huggingface.co/datasets/MacExo/exoData). This means team members can download a clean dataset instead of reprocessing the raw CSVs themselves.
@@ -32,6 +33,7 @@ Note that [`preprocessing.py`](../../archive/2025-26/src/exoskeleton_ml/data/pre
  
 - In `prepare_hf_dataset.py`, NaN checks only run when the `--validate` flag is passed, and even then they [only print a warning](../../archive/2025-26/scripts/prepare_hf_dataset.py#L164). Trials with NaNs are still uploaded.
 - In `datasets.py`, [`__getitem__()`](../../archive/2025-26/src/exoskeleton_ml/data/datasets.py#L298) replaces every NaN in both the inputs and the targets with 0 using `torch.nan_to_num`.
+
 This conflicts with [`phase1.yaml`](../../archive/2025-26/configs/data/phase1.yaml), which sets `remove_invalid: true` (remove trials with NaN values). That setting is never used in the code.
  
 **Normalization.** Each of the 28 input channels and 4 target channels is standardized as `(x - mean) / std`. The statistics are computed in [`_compute_normalization_stats()`](../../archive/2025-26/src/exoskeleton_ml/data/datasets.py#L196) using `nanmean` and a NaN-aware std, so missing values don't affect the statistics. They are computed from the training participants only, saved to `normalization_stats.json`, and [reused for validation and test](../../archive/2025-26/src/exoskeleton_ml/data/datasets.py#L464).
@@ -46,6 +48,7 @@ The pipeline uses two levels of caching:
  
 1. **Hugging Face dataset cache:** Stores the downloaded dataset in `data/processed/phase1/hf_cache/`, along with a `metadata.json` file containing information such as participant IDs, trial counts, and download date.
 2. **Preprocessed tensor cache:** The [`datasets.py`](../../archive/2025-26/src/exoskeleton_ml/data/datasets.py#L123) file converts individual trials into PyTorch tensors and saves them as `.pt` files. An `index.pkl` file keeps track of the saved trials.
+
 The tensor cache uses a hash based on the selected participant IDs. If the corresponding cache already exists, the pipeline reuses it unless reprocessing is explicitly requested.
  
 This helps avoid downloading and converting the same data every time we run an experiment.
@@ -58,6 +61,7 @@ For a trial with `T` timesteps:
  
 - Inputs have shape `(T, 28)`.
 - Targets have shape `(T, 4)`.
+
 The dataset is split by participant, with 11 participants used for training, one for validation, and three for testing. These splits are defined in [`phase1.yaml`](../../archive/2025-26/configs/data/phase1.yaml).
  
 Since trials have different lengths, the DataLoader uses a custom [`collate_fn()`](../../archive/2025-26/src/exoskeleton_ml/data/datasets.py#L315) to make batching possible.
