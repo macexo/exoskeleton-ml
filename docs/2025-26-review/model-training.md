@@ -38,7 +38,17 @@ TCN architecture is better suited for the task: causal convolutions support pred
 ### Baseline and model sizes
 
 The baseline model is not implemented. ([baseline implementation](../../archive/2025-26/src/exoskeleton_ml/models/baseline.py#L7))
+`configs/model/baseline.yaml` describes an LSTM (10 inputs, 2 layers, 128 hidden units, 5 classes), which does not match the 28-input, 4-output regression task; `BaselineModel.forward()` is empty.
 
+The three TCN configs differ in depth, width, kernel size and dropout:
+
+| Config | Blocks | Channels per block | Kernel | Dropout | Actual receptive field |
+|---|---:|---:|---:|---:|---:|
+| `tcn_small` | 4 | 15 | 5 | 0.2 | 121 samples (1.21 s) |
+| `tcn` (default) | 5 | 25 | 7 | 0.2 | 373 samples (3.73 s) |
+| `tcn_large` | 6 | 50 | 9 | 0.3 | 1009 samples (10.09 s) |
+
+([baseline config](../../archive/2025-26/configs/model/baseline.yaml), [small](../../archive/2025-26/configs/model/tcn_small.yaml), [default](../../archive/2025-26/configs/model/tcn.yaml), [large](../../archive/2025-26/configs/model/tcn_large.yaml))
 ### Loss, padding and missing values
 
 The training script selects MSE. `collate_fn` right-pads each trial to the longest trial in that batch and sets the mask to true only for observed timesteps; `masked_loss` expands this mask over the four targets and divides the sum of valid squared errors by the number of valid elements. Thus padding does not contribute to the loss. The `criterion` argument passed to `masked_loss` is not used; the function computes squared error directly. ([loss function](../../archive/2025-26/scripts/train_tcn.py#L41), [criterion selection](../../archive/2025-26/scripts/train_tcn.py#L259), [padding and mask](../../archive/2025-26/src/exoskeleton_ml/data/datasets.py#L315))
