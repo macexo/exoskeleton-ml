@@ -24,6 +24,7 @@ from exoskeleton_ml.utils import (
 )
 from exoskeleton_ml.models import create_model
 from exoskeleton_ml.data import create_dataloaders
+import json
 import sys
 from pathlib import Path
 
@@ -237,6 +238,9 @@ def train(cfg: DictConfig) -> None:
         downsample_factor=cfg.data.preprocessing.get("downsample_factor", 1),
         device=device.type,
     )
+
+    with (output_dir / "normalization_stats.json").open("w") as f:
+        json.dump(train_loader.dataset.normalization_stats, f, indent=2)
 
     print(f"Train batches: {len(train_loader)}")
     print(f"Val batches: {len(val_loader)}")

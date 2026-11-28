@@ -8,9 +8,11 @@ Usage:
 """
 
 import argparse
+import shlex
+import shutil
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
-import numpy as np
 import onnx
 import onnxruntime
 import torch
@@ -38,6 +40,10 @@ def load_model(model_path: Path) -> tuple[torch.nn.Module, int]:
 
 
 def export(model_path: Path, output_path: Path) -> None:
+    stats_path = model_path.parent / "normalization_stats.json"
+    if not stats_path.is_file():
+        raise FileNotFoundError(f"Checkpoint normalization stats missing: {stats_path}")
+
     print(f"Loading model: {model_path}")
     model, window_size = load_model(model_path)
 
@@ -46,6 +52,9 @@ def export(model_path: Path, output_path: Path) -> None:
     print(f"  Window size:    {window_size} timesteps")
     print(f"  Input shape:    (1, {window_size}, 28)")
     print(f"  Output shape:   (1, {window_size}, 4)")
+
+    if window_size != 187:
+        print(f"WARNING: Model window size {window_size} differs from the Pi WINDOW_LEN of 187.")
 
     # Representative input for tracing
     dummy_input = torch.randn(1, window_size, 28)
@@ -56,40 +65,43 @@ def export(model_path: Path, output_path: Path) -> None:
     print(f"\nExporting to ONNX: {output_path}")
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    onnx_program = torch.onnx.export(model, dummy_input, dynamo=True)
-    onnx_program.save(str(output_path))
+    with TemporaryDirectory(dir=output_path.parent) as staging:
+        staged_model = Path(staging) / "model.onnx"
+        onnx_program = torch.onnx.export(model, dummy_input, dynamo=True)
+        onnx_program.save(str(staged_model), external_data=False)
 
-    print("Checking ONNX model...")
-    onnx.checker.check_model(str(output_path))
-    print("  ONNX check passed.")
+        print("Checking ONNX model...")
+        onnx.checker.check_model(str(staged_model))
+        print("  ONNX check passed.")
 
-    print("\nVerifying outputs match PyTorch...")
-    session_options = onnxruntime.SessionOptions()
-    session_options.graph_optimization_level = onnxruntime.GraphOptimizationLevel.ORT_ENABLE_ALL
-    ort_session = onnxruntime.InferenceSession(
-        str(output_path),
-        sess_options=session_options,
-        providers=["CPUExecutionProvider"],
-    )
-
-    input_name = ort_session.get_inputs()[0].name
-    onnx_output = ort_session.run(None, {input_name: dummy_input.numpy()})[0]
-
-    try:
-        torch.testing.assert_close(
-            pytorch_output,
-            torch.tensor(onnx_output),
-            rtol=1e-3,
-            atol=1e-4,
+        print("\nVerifying outputs match PyTorch...")
+        session_options = onnxruntime.SessionOptions()
+        session_options.graph_optimization_level = onnxruntime.GraphOptimizationLevel.ORT_ENABLE_ALL
+        ort_session = onnxruntime.InferenceSession(
+            str(staged_model),
+            sess_options=session_options,
+            providers=["CPUExecutionProvider"],
         )
-        print("  Outputs match within tolerance. Export verified.")
-    except AssertionError as e:
-        print(f"  WARNING: outputs differ: {e}")
 
+        input_name = ort_session.get_inputs()[0].name
+        onnx_output = ort_session.run(None, {input_name: dummy_input.numpy()})[0]
+
+        torch.testing.assert_close(pytorch_output, torch.tensor(onnx_output), rtol=1e-3, atol=1e-4)
+
+        exported_stats = output_path.parent / stats_path.name
+        if exported_stats.resolve() != stats_path.resolve():
+            staged_stats = Path(staging) / stats_path.name
+            shutil.copyfile(stats_path, staged_stats)
+            staged_stats.replace(exported_stats)
+        staged_model.replace(output_path)
+
+    print("  Outputs match within tolerance. Export verified.")
     size_mb = output_path.stat().st_size / (1024 * 1024)
     print(f"\nDone. Saved to: {output_path}  ({size_mb:.2f} MB)")
-    print(f"\nSCP to Pi:")
-    print(f"  scp {output_path} pi@<PI_IP>:~/exoskeleton-ai/outputs/model.onnx")
+    print("\nSCP to Pi:")
+    print(
+        f"  scp {shlex.quote(str(output_path))} {shlex.quote(str(exported_stats))} pi@<PI_IP>:~/exoskeleton-ai/outputs/"
+    )
 
 
 def main() -> None:
