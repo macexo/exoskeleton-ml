@@ -11,6 +11,8 @@ from torch.utils.data import Dataset
 
 from .download import download_and_cache_dataset
 
+CACHE_VERSION = 2
+
 
 class ExoskeletonDataset(Dataset):
     """PyTorch Dataset for exoskeleton movement data from HuggingFace.
@@ -56,6 +58,7 @@ class ExoskeletonDataset(Dataset):
         force_reprocess: bool = False,
         normalize: bool = False,
         normalization_stats: dict | None = None,
+        downsample_factor: int = 1,
     ) -> None:
         """
         Initialize ExoskeletonDataset.
@@ -72,12 +75,14 @@ class ExoskeletonDataset(Dataset):
             normalization_stats: Optional dict with normalization statistics
                                 (mean, std, min, max). If None and normalize=True,
                                 will compute from data.
+            downsample_factor: Keep every Nth sample (slicing, no filtering) to match the Pi.
         """
         self.hf_repo = hf_repo
         self.cache_dir = Path(cache_dir)
         self.participants = participants
         self.normalize = normalize
         self.normalization_stats = normalization_stats
+        self.downsample_factor = downsample_factor
 
         # Create cache directory
         self.cache_dir.mkdir(parents=True, exist_ok=True)
@@ -124,7 +129,8 @@ class ExoskeletonDataset(Dataset):
         """Setup preprocessed cache or load existing cache."""
         # Cache key based on participants (to support different splits)
         participant_key = "_".join(sorted(self.participants)) if self.participants else "all"
-        cache_key = hashlib.md5(participant_key.encode()).hexdigest()[:8]
+        key_str = f"{participant_key}|ds{self.downsample_factor}|v{CACHE_VERSION}"
+        cache_key = hashlib.md5(key_str.encode()).hexdigest()[:8]
 
         self.preprocessed_dir = self.cache_dir / f"preprocessed_{cache_key}"
         self.index_file = self.preprocessed_dir / "index.pkl"
@@ -154,8 +160,15 @@ class ExoskeletonDataset(Dataset):
             moment_targets = torch.tensor(trial["moment_targets"], dtype=torch.float32)
 
             # Concatenate inputs: (seq_len, 28)
+            
             inputs = torch.cat([imu_features, angle_features], dim=-1)
             targets = moment_targets
+
+            # Downsample by slicing (matches the Pi's unfiltered grid sampling)
+            factor = self.downsample_factor
+            inputs = inputs[::factor]
+            targets = targets[::factor]
+            sequence_length = inputs.shape[0]
 
             # Save to disk
             trial_file = self.preprocessed_dir / f"trial_{idx:05d}.pt"
@@ -166,7 +179,7 @@ class ExoskeletonDataset(Dataset):
                     "participant": trial["participant"],
                     "trial_name": trial["trial_name"],
                     "mass_kg": trial["mass_kg"],
-                    "sequence_length": trial["sequence_length"],
+                    "sequence_length": sequence_length,
                 },
                 trial_file,
             )
@@ -177,7 +190,7 @@ class ExoskeletonDataset(Dataset):
                     "file": str(trial_file),
                     "participant": trial["participant"],
                     "trial_name": trial["trial_name"],
-                    "sequence_length": trial["sequence_length"],
+                    "sequence_length": sequence_length,
                 }
             )
 
@@ -412,6 +425,7 @@ def create_dataloaders(
     batch_size: int = 32,
     num_workers: int = 4,
     normalize: bool = True,
+    downsample_factor: int = 1,
     device: str | None = None,
     **kwargs: Any,
 ) -> tuple[Any, Any, Any]:
@@ -427,6 +441,7 @@ def create_dataloaders(
         batch_size: Batch size for DataLoader
         num_workers: Number of worker processes
         normalize: Whether to normalize features
+        downsample_factor: Keep every Nth sample to match the Pi's sample rate
         device: Device type ('cuda', 'mps', 'cpu', or None for auto)
         **kwargs: Additional arguments for DataLoader
 
@@ -459,6 +474,7 @@ def create_dataloaders(
         cache_dir=cache_dir,
         participants=train_participants,
         normalize=normalize,
+        downsample_factor=downsample_factor,
     )
 
     # Use train dataset's normalization stats for val and test
@@ -470,6 +486,7 @@ def create_dataloaders(
             cache_dir=cache_dir,
             participants=val_participants,
             normalize=normalize,
+            downsample_factor=downsample_factor,
             normalization_stats=normalization_stats,
         )
         if val_participants
@@ -482,6 +499,7 @@ def create_dataloaders(
             cache_dir=cache_dir,
             participants=test_participants,
             normalize=normalize,
+            downsample_factor=downsample_factor,
             normalization_stats=normalization_stats,
         )
         if test_participants

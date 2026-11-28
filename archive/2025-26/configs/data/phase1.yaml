@@ -102,6 +102,7 @@ drop_last_test: false
 
 # Preprocessing options
 preprocessing:
+  downsample_factor: 2  # 200 Hz -> 100 Hz to match the Pi's 10 ms grid
   normalize: true  # Whether to normalize features
   normalization_method: "standard"  # Options: "standard", "minmax", "robust"
   normalization_stats_file: data/processed/phase1/normalization_stats.json

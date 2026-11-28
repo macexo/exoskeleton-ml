@@ -463,3 +463,36 @@ class TestExoskeletonDatasetUtilities:
             )
 
             assert len(dataset_filtered) == 2
+
+
+
+class TestDownsampling:
+    """Tests for downsample_factor."""
+
+    def test_factor_2_halves_length(self, tmp_path, mock_hf_dataset):
+        with patch("exoskeleton_ml.data.datasets.download_and_cache_dataset") as mock_download:
+            mock_download.return_value = mock_hf_dataset
+            dataset = ExoskeletonDataset(
+                hf_repo="test/repo", cache_dir=tmp_path / "cache",
+                normalize=False, downsample_factor=2,
+            )
+
+        original = mock_hf_dataset["sequence_length"]
+        for i in range(len(dataset)):
+            item = dataset[i]
+            assert item["sequence_length"] == (original[i] + 1) // 2
+            assert item["sequence_length"] == item["inputs"].shape[0]
+            assert item["targets"].shape[0] == item["inputs"].shape[0]
+            assert dataset.index[i]["sequence_length"] == item["inputs"].shape[0]
+
+    def test_different_factor_uses_different_cache_dir(self, tmp_path, mock_hf_dataset):
+        cache_dir = tmp_path / "cache"
+        with patch("exoskeleton_ml.data.datasets.download_and_cache_dataset") as mock_download:
+            mock_download.return_value = mock_hf_dataset
+            ds1 = ExoskeletonDataset(hf_repo="test/repo", cache_dir=cache_dir,
+                                     normalize=False, downsample_factor=1)
+            ds2 = ExoskeletonDataset(hf_repo="test/repo", cache_dir=cache_dir,
+                                     normalize=False, downsample_factor=2)
+
+        assert ds1.preprocessed_dir != ds2.preprocessed_dir
+        

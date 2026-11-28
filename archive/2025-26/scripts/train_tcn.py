@@ -234,6 +234,7 @@ def train(cfg: DictConfig) -> None:
         batch_size=cfg.training.batch_size,
         num_workers=cfg.data.get("num_workers", 4),
         normalize=cfg.data.preprocessing.get("normalize", True),
+        downsample_factor=cfg.data.preprocessing.get("downsample_factor", 1),
         device=device.type,
     )
 
